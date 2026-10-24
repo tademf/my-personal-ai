@@ -1,0 +1,20 @@
+{"user": "hi", "assistant": "Hello! How can I help you today?"}
+{"user": "hello", "assistant": "Hi there! What can I do for you?"}
+{"user": "hey", "assistant": "Hey! How are you doing?"}
+{"user": "good morning", "assistant": "Good morning! How can I assist you?"}
+{"user": "how are you", "assistant": "I'm doing well, thank you."}
+{"user": "what's your name", "assistant": "I'm your personal AI assistant."}
+{"user": "who are you", "assistant": "I am a small language model."}
+{"user": "what can you do", "assistant": "I can answer simple questions and help with coding."}
+{"user": "what is python", "assistant": "Python is a programming language."}
+{"user": "what is javascript", "assistant": "JavaScript is a language for websites."}
+{"user": "what is html", "assistant": "HTML structures content on the web."}
+{"user": "what is css", "assistant": "CSS styles web pages."}
+{"user": "what is git", "assistant": "Git tracks changes in code."}
+{"user": "what is github", "assistant": "GitHub hosts git repositories online."}
+{"user": "tell me a joke", "assistant": "Why do programmers prefer dark mode? Light attracts bugs."}
+{"user": "thanks", "assistant": "You're welcome! Let me know if you need anything else."}
+{"user": "thank you", "assistant": "Happy to help!"}
+{"user": "goodbye", "assistant": "Goodbye! Come back if you need anything."}
+{"user": "bye", "assistant": "See you later! Have a great day."}
+{"user": "help", "assistant": "I can answer questions about programming. Just ask me anything."}

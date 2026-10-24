@@ -51,11 +51,19 @@ class CharTokenizer:
         """
         Build the vocabulary from `text`.
 
-        Every unique character in `text` gets a new ID starting at 4.
-        Calling fit() twice with different text will add new characters
-        but keep existing ones.
+        New characters are assigned IDs starting from the highest ID
+        currently in use (including special tokens). Calling fit() twice
+        with different text adds new characters without overwriting
+        existing ones.
         """
-        next_id = max(self.SPECIAL_TOKENS.values()) + 1
+        # FIX: start from the highest ID in use, not from 4.
+        # Without this, a second fit() call would overwrite IDs of
+        # existing characters, corrupting the vocabulary.
+        existing_ids = (
+            list(self.SPECIAL_TOKENS.values()) + list(self.char_to_id.values())
+        )
+        next_id = max(existing_ids) + 1 if existing_ids else 4
+
         for ch in sorted(set(text)):
             if ch not in self.char_to_id:
                 self.char_to_id[ch] = next_id
