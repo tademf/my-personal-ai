@@ -30,7 +30,7 @@ export interface UseConversationsReturn {
   addUserMessage: (content: string) => string
   addAssistantMessage: () => string
   appendToken: (messageId: string, token: string) => void
-  finaliseAssistant: (messageId: string, fullText: string, backend?: 'webgpu' | 'wasm') => void
+  finaliseAssistant: (messageId: string, fullText: string, backend?: 'webgpu' | 'wasm' | 'python') => void
   markError: (messageId: string, error: string) => void
   removeConversation: (id: string) => void
   clearHistory: () => void
@@ -66,7 +66,7 @@ export function useConversations(): UseConversationsReturn {
    */
   const persist = useCallback((updated: Conversation) => {
     saveConversation(updated).catch(console.error)
-    activeRef.current = updated          // ← THE FIX
+    activeRef.current = updated
     setActiveConversation(updated)
     setConversations((prev) => {
       const without = prev.filter((c) => c.id !== updated.id)
@@ -88,7 +88,7 @@ export function useConversations(): UseConversationsReturn {
   const selectConversation = useCallback(async (id: string) => {
     const conv = await getConversation(id)
     if (conv) {
-      activeRef.current = conv          // ← keep ref in sync
+      activeRef.current = conv
       setActiveConversation(conv)
     }
   }, [])
@@ -161,7 +161,7 @@ export function useConversations(): UseConversationsReturn {
   }, [])
 
   const finaliseAssistant = useCallback(
-    (messageId: string, fullText: string, backend?: 'webgpu' | 'wasm') => {
+    (messageId: string, fullText: string, backend?: 'webgpu' | 'wasm' | 'python') => {
       const current = activeRef.current
       if (!current) return
       const messages = current.messages.map((m) =>
@@ -196,7 +196,7 @@ export function useConversations(): UseConversationsReturn {
       const next = prev.filter((c) => c.id !== id)
       if (activeRef.current?.id === id) {
         const newActive = next[0] ?? null
-        activeRef.current = newActive   // ← keep ref in sync
+        activeRef.current = newActive
         setActiveConversation(newActive)
       }
       return next
@@ -206,7 +206,7 @@ export function useConversations(): UseConversationsReturn {
   const clearHistory = useCallback(() => {
     clearAllConversations().catch(console.error)
     setConversations([])
-    activeRef.current = null            // ← keep ref in sync
+    activeRef.current = null
     setActiveConversation(null)
   }, [])
 

@@ -7,7 +7,7 @@ import { useEffect, useState } from 'react'
 import { Sidebar } from './components/Sidebar'
 import { ChatView } from './components/ChatView'
 import { SettingsPanel } from './components/SettingsPanel'
-import { useModel } from './hooks/useModel'
+import { usePythonModel } from './hooks/usePythonModel'
 import { useConversations } from './hooks/useConversations'
 import { useSettings, useOnlineStatus } from './hooks/useSettings'
 
@@ -15,7 +15,7 @@ export default function App() {
   const [sidebarOpen, setSidebarOpen] = useState(false)
   const [settingsOpen, setSettingsOpen] = useState(false)
 
-  const modelHook = useModel()
+  const modelHook = usePythonModel()
   const convHook = useConversations()
   const { settings, updateSettings } = useSettings()
   const isOnline = useOnlineStatus()

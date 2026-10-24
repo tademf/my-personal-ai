@@ -13,7 +13,7 @@ export interface Message {
   /** Error text if this message failed to generate */
   error?: string
   /** Which backend produced this response */
-  backend?: 'webgpu' | 'wasm' | 'none'
+  backend?: 'webgpu' | 'wasm' | 'python' | 'none'
 }
 
 /** A full conversation (multiple messages under a title) */
@@ -42,7 +42,7 @@ export interface ModelProgress {
   /** Human-readable status label */
   label: string
   /** Which backend is active */
-  backend: 'webgpu' | 'wasm' | 'unknown'
+  backend: 'webgpu' | 'wasm' | 'python' | 'unknown'
   /** Error message if status === 'error' */
   error?: string
   /** Loaded model identifier */
@@ -69,7 +69,7 @@ export type WorkerInMessage =
 export type WorkerOutMessage =
   | { type: 'progress'; progress: ModelProgress }
   | { type: 'token'; token: string }
-  | { type: 'complete'; fullText: string; backend: 'webgpu' | 'wasm' }
+  | { type: 'complete'; fullText: string; backend: 'webgpu' | 'wasm' | 'python' }
   | { type: 'error'; error: string }
 
 /** Default app settings */
@@ -87,35 +87,37 @@ export const DEFAULT_SETTINGS: AppSettings = {
     'Keep replies short and practical.',
 }
 
-/** The model we ship with — small, verified, Apache 2.0 */
-export const DEFAULT_MODEL_ID = 'HuggingFaceTB/SmolLM2-360M-Instruct'
+/** The model identifier — our own from-scratch model */
+export const DEFAULT_MODEL_ID = 'my-personal-ai-817K'
 
 /**
  * Human-readable model information shown in the Settings panel.
- * SmolLM2-360M-Instruct:
- *   - 360M parameters
- *   - Apache 2.0 license (free for any use)
- *   - ONNX format — runs via @huggingface/transformers in-browser
- *   - Q4 quantized: ~270 MB download
- *   - WebGPU-first with automatic WASM (CPU) fallback
+ * Personal AI 817K:
+ *   - 817K parameters — trained from scratch
+ *   - Fine-tuned on ~20 conversation examples
+ *   - Runs on your CPU via a local Python server
+ *   - Character-level tokenizer (72 chars)
+ *   - Base training: Shakespeare (loss 2.19)
+ *   - Fine-tuning: conversations (loss 0.045)
  */
 export const MODEL_INFO = {
   id: DEFAULT_MODEL_ID,
-  name: 'SmolLM2 360M Instruct',
-  publisher: 'HuggingFace',
-  license: 'Apache 2.0',
-  parameters: '360M',
-  quantization: 'q4 (4-bit)',
-  downloadSizeMB: '~270 MB',
+  name: 'Personal AI 817K',
+  publisher: 'Trained from scratch (tademf)',
+  license: 'MIT',
+  parameters: '817K',
+  quantization: 'fp32',
+  downloadSizeMB: '<5 MB',
   description:
-    'SmolLM2 is a compact language model optimised for on-device instruction following. ' +
+    'A tiny language model trained completely from scratch on a single laptop. ' +
     'It is NOT a large language model — expect short, simple responses. ' +
-    'Best for Q&A, summaries, and simple code snippets.',
+    'The entire pipeline (tokenizer, transformer, training, fine-tuning) was built from zero.',
   limitations: [
-    'May generate incorrect or repetitive text',
-    'Context window is limited (~2048 tokens)',
-    'Not suitable for complex multi-step reasoning',
-    'Quality is significantly below cloud LLMs like GPT-4 or Gemini',
-    'First use requires ~270 MB download (Wi-Fi recommended)',
+    'Not a large language model — expect short, simple responses',
+    'No multi-turn memory (each message is independent)',
+    'Cannot reason about complex questions',
+    'May produce garbled text on unfamiliar prompts',
+    'Quality is far below GPT-4 or Gemini',
+    'Best suited for greetings and short factual questions',
   ],
 } as const
